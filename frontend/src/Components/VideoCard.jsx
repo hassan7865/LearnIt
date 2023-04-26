@@ -72,7 +72,7 @@ const VideoCard = () => {
   const [video,setvideo] = useState([])
   useEffect(()=>{
     const getvideos = async()=>{
-      await Req.get("/video/random")
+      await Req.get("/video/allvideos")
       .then((res)=>{
         setvideo(res.data)
       })
