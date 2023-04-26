@@ -138,8 +138,8 @@ const FeaturedVideo = () => {
     const fetchvid = fetchrandom!==0 && fetch[fetchrandom]
   return (
     <>
-   {fetch?
-   fetchvid && 
+   {fetch && fetchvid ?
+   
    <Container key={fetchvid._id}>
     <ImageContainer>
         <Image src={fetchvid.imgUrl}></Image>
