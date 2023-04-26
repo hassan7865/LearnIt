@@ -152,7 +152,7 @@ const Signin = () => {
                         <Input type="password" onChange={(e) => setpassword(e.target.value)} placeholder='Password' required></Input>
                         <Button type='submit'>Sign In</Button>
                     </Form>
-                    <Text>New to Learn It<Link to="/signup/form"><TextM>Create An Account</TextM></Link></Text>
+                    <Text>New to Learn It<Link to="/signup"><TextM>Create An Account</TextM></Link></Text>
                 </Wrapper>
             </>}
         </Container>
