@@ -7,7 +7,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import { Link } from 'react-router-dom';
 import { Req } from '../Url';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddWatchList, NotAddWatchList } from '../Redux/LoginRedux';
+import { AddWatchList} from '../Redux/LoginRedux';
 const Container = styled.div`
 
 `
@@ -114,7 +114,9 @@ const FeaturedVideo = () => {
     const getvideo = async()=>{
       try{
       const res = await Req.get("/video/allvideos")
-      setfetch(res.data)
+      const data = res.data
+      const fetchrandom = Math.floor(Math.random() * data.length)
+      setfetch(data[fetchrandom])
       }
       catch{
 
@@ -130,32 +132,25 @@ const FeaturedVideo = () => {
       dispatch(AddWatchList(id))
       await Req.put(`/user/videolist/${id}`)
     }
-    const MinusList = async(id)=>{
-      dispatch(NotAddWatchList(id))
-      await Req.put(`/user/Minvideolist/${id}`)
-    }
-    const fetchrandom = Math.floor(Math.random() * fetch.length)
-    const fetchvid = fetchrandom!==0 && fetch[fetchrandom]
+
   return (
     <>
-   {fetch && fetchvid ?
+   {fetch  ?
    
-   <Container key={fetchvid._id}>
+   <Container key={fetch._id}>
     <ImageContainer>
-        <Image src={fetchvid.imgUrl}></Image>
+        <Image src={fetch.imgUrl}></Image>
         <Cont>
-          <Head>{fetchvid.title}</Head>
-          <Desc>{fetchvid.description}</Desc>
+          <Head>{fetch.title}</Head>
+          <Desc>{fetch.description}</Desc>
           <Buttons>
-            <Link to={`video/${fetchvid._id}`} style={{textDecoration:"none"}}>
-            <Button onClick={()=>AddView(fetchvid._id)}><PlayArrowIcon/>Play</Button>
+            <Link to={`video/${fetch._id}`} style={{textDecoration:"none"}}>
+            <Button onClick={()=>AddView(fetch._id)}><PlayArrowIcon/>Play</Button>
             </Link>
-            {current.myList.includes(fetchvid._id) ?
+            {current.myList.includes(fetch._id) ?
             <Button type='list'><DoneIcon style={{color:"#43ff32"}} />Watch List</Button >:
             <Button type='list' 
-            onClick={e => {
-              e.preventDefault()
-              AddList(fetchvid._id)}}><AddIcon  />Watch List</Button>}
+            onClick={()=>AddList(fetch._id)}><AddIcon/>Watch List</Button>}
           </Buttons>
         </Cont>
     </ImageContainer>

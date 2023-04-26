@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { NotAddWatchList } from '../Redux/LoginRedux';
 import Footer from '../Components/Footer';
-import LoaderButton from '../Components/LoaderButton';
+import Loader from '../Components/Loader'
 
 const Container = styled.div`
   height: ${props=>props.type === 1 || props.type === 0 ? "100vh" : "100%"};
@@ -98,19 +98,29 @@ font-weight: 300;
 text-align: center;
 margin-top: 100px;
 `
+const Preloader = styled.div`
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 const WatchList = () => {
   const dispatch = useDispatch()
   const [mylist,setmylist] = useState([])
   const [load,setload] = useState(false)
   useEffect(()=>{
     const getmylist = async()=>{
+      setload(true)
       await Req.get("/video/list")
       .then((res)=>{
-          setmylist(res.data)
+        if(res.status === 200){
+          setload(false)
+          setmylist(res.data)}
       })
     }
     getmylist()
-  })
+  },[])
   const MinusList = async(id)=>{
     setload(true)
     dispatch(NotAddWatchList(id))
@@ -118,6 +128,7 @@ const WatchList = () => {
     .then((res)=>{
       if(res.status === 200){
         setload(false)
+        window.location.reload()
       }
     })
   }
@@ -132,7 +143,7 @@ const WatchList = () => {
     <>
     <Navbar type="Video"/>
     
-   <Container type={mylist.length}>
+   {load ? <Preloader><Loader/></Preloader>:<Container type={mylist.length}>
    {mylist.length !==0?
    mylist.map((items)=>(
     <Wrapper key={items._id}>
@@ -148,12 +159,12 @@ const WatchList = () => {
         </VideoInfo>
         <Buttons>
           <Button onClick={()=>navigate(`/video/${items._id}`)} type='1'>Play</Button>
-          <Button onClick={()=>MinusList(items._id)} type='2'>{load ? <LoaderButton/>:<Remove/>}</Button>
+          <Button onClick={()=>MinusList(items._id)} type='2'><Remove/></Button>
         </Buttons>
       </Right>
     </Wrapper>
        )):<Warn>No Videos in Watch List</Warn>}
-   </Container>
+   </Container>}
    <Footer/>
    </>
   )
