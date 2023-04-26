@@ -150,7 +150,12 @@ const FeaturedVideo = () => {
             <Link to={`video/${fetchvid._id}`} style={{textDecoration:"none"}}>
             <Button onClick={()=>AddView(fetchvid._id)}><PlayArrowIcon/>Play</Button>
             </Link>
-            {current.myList.includes(fetchvid._id) ?<Button type='list' onClick={()=>MinusList(fetchvid._id)}><DoneIcon style={{color:"#43ff32"}} />Watch List</Button >:<Button type='list' onClick={()=>AddList(fetchvid._id)}><AddIcon  />Watch List</Button>}
+            {current.myList.includes(fetchvid._id) ?
+            <Button type='list'><DoneIcon style={{color:"#43ff32"}} />Watch List</Button >:
+            <Button type='list' 
+            onClick={e => {
+              e.preventDefault()
+              AddList(fetchvid._id)}}><AddIcon  />Watch List</Button>}
           </Buttons>
         </Cont>
     </ImageContainer>
