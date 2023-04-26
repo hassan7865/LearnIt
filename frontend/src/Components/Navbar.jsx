@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import CloseIcon from '@mui/icons-material/Close';
 import Logo from '../Utils/Logo.png'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
@@ -77,10 +78,13 @@ const Cont = styled.div`
   right: 0px;
   width: 80px;
   margin-left: 25px;
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   height: 100px;
   gap: 10px;
-  top: 4vh;
+  top: 7vh;
   background-color: black;
   color: white;
   border-radius: 8px;
@@ -106,19 +110,12 @@ display: flex;
 align-items: center;
 justify-content: center;
 position: relative;
-&:hover ${Cont}{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-
-}
 `
 const List = styled.div`
 cursor: pointer;
 `
 const Icons = styled.div`
-
+cursor: pointer;
 `
 const Center = styled.div``
 const Search = styled.div`
@@ -261,6 +258,7 @@ const Navbar = ({type}) => {
     const user = useSelector((state)=>state.login.current)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [Dropdown,setDropdown] = useState(false)
     const [scroll,setscroll] = useState(false)
     window.onscroll = () => {
         setscroll(window.pageYOffset === 0 ? false : true)
@@ -337,13 +335,13 @@ const Navbar = ({type}) => {
                 <IconS onClick={(e) => setopen(true)}><SearchIcon /></IconS>
                 <Profile src={user?.profile}></Profile>
                 <Icon>
-                    <Icons><ExpandMoreIcon style={{zIndex:"99"}} /></Icons>
-                    <Cont>
+                    <Icons>{Dropdown ? <CloseIcon onClick={()=>setDropdown(false)} style={{zIndex:"99",transition:"all ease 0.5s"}} />:<ExpandMoreIcon onClick={()=>setDropdown(true)} style={{zIndex:"99"}} />}</Icons>
+                    {Dropdown && <Cont>
                         <List onClick={()=>setopenS(true)}>Account</List>
                         <ListM onClick={()=>navigate("/myList")}>Watch List</ListM>
                        <Link style={{color:"inherit",textDecoration:"none"}} to="/signin"><List onClick={()=>handleLogout()}>Logout</List></Link> 
                         <List onClick={()=>setopenA(true)}>About</List>
-                    </Cont>
+                    </Cont>}
                 </Icon>
             </Right>
             <Setting openS={openS} setopenS={setopenS}/>

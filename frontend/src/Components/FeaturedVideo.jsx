@@ -145,7 +145,7 @@ const FeaturedVideo = () => {
         <Image src={fetchvid.imgUrl}></Image>
         <Cont>
           <Head>{fetchvid.title}</Head>
-          <Desc>{fetchrandom.description}</Desc>
+          <Desc>{fetchvid.description}</Desc>
           <Buttons>
             <Link to={`video/${fetchvid._id}`} style={{textDecoration:"none"}}>
             <Button onClick={()=>AddView(fetchvid._id)}><PlayArrowIcon/>Play</Button>

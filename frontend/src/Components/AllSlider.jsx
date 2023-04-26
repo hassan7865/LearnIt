@@ -98,7 +98,7 @@ const AllSlider = () => {
         <Cont>
         {random ? 
         <Wrapper>
-            <Slider size={true} data={random.splice(0,16)}/>
+            <Slider size={true} data={random.slice(0,16)}/>
           </Wrapper>
         :<Skeleton type="Random"/>}
         </Cont>
