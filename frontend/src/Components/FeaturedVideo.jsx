@@ -135,7 +135,7 @@ const FeaturedVideo = () => {
 
   return (
     <>
-   {fetch  ?
+   {fetch.length!==0  ?
    
    <Container key={fetch._id}>
     <ImageContainer>
