@@ -108,12 +108,12 @@ ${tablet({
 }
 `
 const FeaturedVideo = () => {
-  const [fetch,setfetch] = useState()
+  const [fetch,setfetch] = useState([])
   const dispatch = useDispatch()
   useEffect(()=>{
     const getvideo = async()=>{
       try{
-      const res = await Req.get("/video/onevideo")
+      const res = await Req.get("/video/allvideos")
       setfetch(res.data)
       }
       catch{
@@ -134,26 +134,27 @@ const FeaturedVideo = () => {
       dispatch(NotAddWatchList(id))
       await Req.put(`/user/Minvideolist/${id}`)
     }
-
+    const fetchrandom = Math.floor(Math.random() * fetch.length)
+    const fetchvid = fetchrandom!==0 && fetch[fetchrandom]
   return (
     <>
    {fetch?
-   fetch.map((items)=>(
-   <Container key={items._id}>
+   fetchvid && 
+   <Container key={fetchvid._id}>
     <ImageContainer>
-        <Image src={items.imgUrl}></Image>
+        <Image src={fetchvid.imgUrl}></Image>
         <Cont>
-          <Head>{items.title}</Head>
-          <Desc>{items.description}</Desc>
+          <Head>{fetchvid.title}</Head>
+          <Desc>{fetchrandom.description}</Desc>
           <Buttons>
-            <Link to={`video/${items._id}`} style={{textDecoration:"none"}}>
-            <Button onClick={()=>AddView(items._id)}><PlayArrowIcon/>Play</Button>
+            <Link to={`video/${fetchvid._id}`} style={{textDecoration:"none"}}>
+            <Button onClick={()=>AddView(fetchvid._id)}><PlayArrowIcon/>Play</Button>
             </Link>
-            {current.myList.includes(items._id) ?<Button type='list' onClick={()=>MinusList(items._id)}><DoneIcon style={{color:"#43ff32"}} />Watch List</Button >:<Button type='list' onClick={()=>AddList(items._id)}><AddIcon  />Watch List</Button>}
+            {current.myList.includes(fetchvid._id) ?<Button type='list' onClick={()=>MinusList(fetchvid._id)}><DoneIcon style={{color:"#43ff32"}} />Watch List</Button >:<Button type='list' onClick={()=>AddList(fetchvid._id)}><AddIcon  />Watch List</Button>}
           </Buttons>
         </Cont>
     </ImageContainer>
-   </Container>)):<Skeleton></Skeleton>
+   </Container>:<Skeleton></Skeleton>
    }
    </>
   )

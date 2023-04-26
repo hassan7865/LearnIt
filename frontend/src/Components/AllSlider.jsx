@@ -52,7 +52,7 @@ const AllSlider = () => {
   useEffect(()=>{
     const getrandom =async()=>{
       try{
-        const res = await Req.get("/video/random")
+        const res = await Req.get("/video/allvideos")
         setrandom(res.data)
       }catch(err){
         
@@ -98,7 +98,7 @@ const AllSlider = () => {
         <Cont>
         {random ? 
         <Wrapper>
-            <Slider size={true} data={random}/>
+            <Slider size={true} data={random.splice(0,16)}/>
           </Wrapper>
         :<Skeleton type="Random"/>}
         </Cont>

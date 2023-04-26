@@ -15,22 +15,6 @@ router.post("/newvideo",verify,async(req,res)=>{
     }
 }
 })
-router.get("/onevideo",verify,async(req,res)=>{
-    try{
-        const random = await Video.aggregate([{$sample:{size:1}}])
-        res.status(200).json(random)
-    }catch(err){
-        res.status(500).json(err)
-    }
-})
-router.get("/random",verify,async(req,res)=>{
-    try{
-        const one = await Video.aggregate([{$sample:{size:20}}])
-        res.status(200).json(one)
-    }catch(err){
-        res.status(500).json(err)
-    }
-})
 router.delete("/deletevideo/:id",verify,async(req,res)=>{
     const user = await User.findById(req.user.id)
     if (user.isAdmin === true){
