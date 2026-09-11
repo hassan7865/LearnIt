@@ -1,46 +1,61 @@
 # LearnIt
 
-Learning platform with an Express/MongoDB backend and a frontend app.
+Full-stack learning / video platform: Express + MongoDB API with a React (CRA) frontend. Users browse and watch videos; admins manage the catalog.
 
 **Live:** [learn-it-ruby.vercel.app](https://learn-it-ruby.vercel.app)
 
 ## Overview
 
-LearnIt is a full-stack learning app: courses/content managed through an Express API with MongoDB, plus a separate frontend.
+LearnIt serves a built frontend from the API in production (`frontend/build`) while exposing REST routes for auth, users, and videos. The client uses Redux, MUI, and `react-player` for playback.
+
+## Features
+
+- Sign up / sign in with JWT and bcrypt-hashed passwords
+- Video catalog: create/delete (admin), list and watch
+- User profile updates and personal watch list (`myList`)
+- Frontend pages: intro, home, video player, watch list, auth
+- Firebase helpers on the client; API duration utilities (`get-video-duration`)
 
 ## Stack
 
-- **Backend** (repo root): Node.js, Express, Mongoose/MongoDB
-- **Frontend** (`frontend/`): Client application
+| Layer | Tech |
+|-------|------|
+| Backend | Node.js, Express, Mongoose, JWT, bcryptjs, cors, dotenv |
+| Frontend | React (Create React App), Redux Toolkit, MUI, Axios, react-player, styled-components |
+| Deploy | Vercel (`vercel.json`); static SPA served from Express |
 
 ## Structure
 
 ```
-index.js      # API entry
-Models/       # Mongoose models
-Routes/       # Express routes
-frontend/     # Frontend app
-vercel.json   # Deploy config
+index.js          # API + static frontend serve
+Models/           # User, Video
+Routes/           # auth, user, video, verifyToken
+frontend/         # CRA app (src/Pages, Components, Redux)
+vercel.json
 ```
 
-## Getting started
+## Setup
 
-### Backend
+### Backend (repo root)
 
 ```bash
 npm install
-# Set MongoDB URI and other env vars
+# .env: MONGOURL, PORT, JWTKEY
 npm start
 ```
 
-### Frontend
+### Frontend (development)
 
 ```bash
 cd frontend
 npm install
-npm run dev   # or the script defined in frontend/package.json
+npm start
 ```
 
-## Deploy
+For production-style serving, build the client (`npm run build` in `frontend/`) so `frontend/build` exists for the Express static handler.
 
-Backend/frontend can be deployed via Vercel using the included `vercel.json` where applicable.
+## API prefixes
+
+- `/api/auth` — signup / signin  
+- `/api/user` — profile, watch list  
+- `/api/video` — video CRUD (admin-gated writes)  
